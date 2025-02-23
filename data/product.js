@@ -1,4 +1,4 @@
-import getConnection from "./connection";
+import getConnection from "./connection.js";
 import { ObjectId } from "mongodb";
 
 const DATABASE = process.env.DATABASE;

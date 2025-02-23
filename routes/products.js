@@ -1,5 +1,5 @@
 import express from "express";
-import { rolAdministrador } from "../middleware/roles";
+import { rolAdministrador } from "../middleware/roles.js";
 import auth from "../middleware/auth.js";
 import {
   activateProductById,
