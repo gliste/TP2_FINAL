@@ -138,3 +138,58 @@ export function validarBodyAgregarProducto(body) {
     return error.message;
   }
 }
+
+export function validarBodyAgregarCompra(body){
+  try {
+    const {items} = body;
+    if(!Array.isArray(items) || items.length === 0){
+      throw new Error("La compra no puede realizarse por falta de productos.");
+    }
+
+    for (const item of items){
+      if (
+        !item.productId ||
+        validator.isEmpty(item.productId) ||
+        !validator.isMongoId(item.productId)
+      ){
+        let error = "Por favor especificar el producto a comprar";
+        if(item.productId) {
+          error = `El id de producto ${item.productId} no es válido.`;
+        }
+        throw new Error(error);
+      }
+
+      if (
+        !item.quantity || 
+        !validator.isInt(item.quantity) ||
+        item.quantity <= 0
+      ) {
+        let error = "Por favor especificar el producto a comprar";
+        if(item.quantity){
+          error = `La cantidad del producto ${item.productId} debe ser mayor a 0. `;
+        }
+        throw new Error(error);
+      }
+    }
+      return null;
+    } catch(error){
+      return error.message;
+    }
+   
+}
+
+export function normalizarBodyAgregarCompra(body){
+  const {items} = body;
+  const itemsNormalizados = [];
+
+  for(const item of items){
+    const {productId, quantity} = item;
+    itemsNormalizados.push({
+      productId: productId.trim(),
+      quantity: parseInt(quantity),
+    });
+  }
+  return itemsNormalizados;
+}
+
+
