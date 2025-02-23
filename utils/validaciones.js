@@ -1,3 +1,4 @@
+import { Decimal128 } from "mongodb";
 import validator from "validator"; //un plugin de validacion
 
 const MSG_ERROR_OBLIGATORIOS = "Faltan campos obligatorios:";
@@ -7,9 +8,8 @@ const MSG_ERROR_PASSWORDS = "Las contreñas no coinciden.";
 
 //se destructura ({}) el body recibido para poder validar cada campo
 export function validarBodyRegistro(body) {
-    let res = null;
+  let res = null;
   try {
-   
     //estos datos son lo que se validan del body
 
     const { email, password, r_password, name, lastname } = body;
@@ -44,4 +44,97 @@ export function validarBodyRegistro(body) {
   }
 
   return res;
+}
+
+export function normalizarBodyAgregarProducto(body) {
+  const { description, category, stock, price } = body;
+  const bodyNormalizado = {};
+  bodyNormalizado.description = description.trim();
+  bodyNormalizado.category = category.trim();
+  bodyNormalizado.stock = parseInt(stock);
+  const truncatedPrice = Math.floor(parseFloat(price) * 100) / 100;
+  bodyNormalizado.price = Decimal128.fromString(truncatedPrice.toFixed(2));
+  return bodyNormalizado;
+}
+
+export function normalizarBodyEditarProducto(body) {
+  const { description = "", category = "", stock = "", price = "" } = body;
+  const bodyNormalizado = {};
+  if (!validator.isEmpty(description)) {
+    bodyNormalizado.description = description.trim();
+  }
+  if (!validator.isEmpty(category)) {
+    bodyNormalizado.category = category.trim();
+  }
+
+  if (!validator.isEmpty(stock)) {
+    bodyNormalizado.stock = parseInt(stock);
+  }
+
+  if (!validator.isEmpty(price)) {
+    const truncatedPrice = Math.floor(parseFloat(price) * 100) / 100;
+    bodyNormalizado.price = Decimal128.fromString(truncatedPrice.toFixed(2));
+  }
+
+  return bodyNormalizado;
+}
+
+export function validarBodyEditarProducto(body) {
+  try {
+    const { description, category, stock, price } = body;
+    if (description && validator.isEmpty(description)) {
+      throw new Error(MSG_ERROR_DESCRIPTION);
+    }
+
+    if (category && validator.isEmpty(category)) {
+      throw new Error(MSG_ERROR_CATEGORY);
+    }
+
+    if (stock && (!validator.isInt(stock) || stock < 0)) {
+      throw new Error(MSG_ERROR_STOCK);
+    }
+
+    if (price && (!validator.isNumeric(price) || price < 0)) {
+      throw new Error(MSG_ERROR_PRICE);
+    }
+
+    if (!description && !category && !stock && !price) {
+      throw new Error(MSG_ERROR_EDITAR);
+    }
+    return null;
+  } catch (error) {
+    return error.message;
+  }
+}
+
+export function validarBodyAgregarProducto(body) {
+  try {
+    const { description, category, stock, price } = body;
+    if (!description || !category || !stock || !price) {
+      throw new Error(
+        `${MSG_ERROR_OBLIGATORIOS} se requieren descripcion, categoria, stock y precio.`
+      );
+    }
+
+    if (
+      validator.isEmpty(description) ||
+      validator.isEmpty(category) ||
+      validator.isEmpty(stock) ||
+      validator.isEmpty(price)
+    ) {
+      throw new Error(
+        `${MSG_ERROR_OBLIGATORIOS} se requieren descripcion, categoria, stock y precio.`
+      );
+    }
+    if (!validator.isInt(stock) || stock < 0) {
+      throw new Error(MSG_ERROR_STOCK);
+    }
+
+    if (!validator.isNumeric(price) || price < 0) {
+      throw new Error(MSG_ERROR_PRICE);
+    }
+    return null;
+  } catch (error) {
+    return error.message;
+  }
 }
