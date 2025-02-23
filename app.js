@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import usersRouters from "./routes/users.js";
+import usersRouter from "./routes/users.js";
 
 
 
@@ -10,7 +10,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/api/users", usersRouters);
+app.use("/api/users", usersRouter);
+
 
 
 app.listen(PORT, () => {

@@ -54,7 +54,7 @@ export async function unActivateProductById(id) {
 
 async function changeAvailability(id, boolean) {
   const client = await getConnection();
-  const objectId = new ObjectId(id); //consultar deprecado
+  const objectId = new ObjectId(id); 
   const result = await client
     .db(DATABASE)
     .collection(COLLECTION)
