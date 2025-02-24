@@ -18,7 +18,7 @@ import {
 } from "../utils/validaciones.js";
 import validator from "validator";
 
-const productsRouter = express.Router(); //consultar 
+const productsRouter = express.Router(); 
 
 const MSG_ERROR_PRODUCTO_EXISTE =
   "Ya existe un producto con la misma descripción";
@@ -50,6 +50,7 @@ productsRouter.get("/:id", async (req, res) => {
     }
     //Se obtiene el producto por el id
     const product = await getProductById(id);
+    
     //Si el producto no se encuentra se informa con msg correspondiente
     if (!product || !product.available) {
       return res.status(404).send({ error: MSG_ERROR_PRODUCTO_NO_ENCONTRADO });

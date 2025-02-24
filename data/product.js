@@ -1,5 +1,5 @@
 import getConnection from "./connection.js";
-import { ObjectId } from "mongodb"; //consultar ¿?
+import { ObjectId } from "mongodb"; 
 
 const DATABASE = process.env.DATABASE;
 const COLLECTION = process.env.PRODUCTS_COLLECTION;
@@ -47,7 +47,7 @@ export async function unActivateProductById(id) {
   let result = null;
   const product = await getProductById(id);
 
-  if (product && product.availabe) {
+  if (product && product.available) {
     result = await changeAvailability(id, false);
   }
   return result;
@@ -68,7 +68,7 @@ export async function activateProductById(id) {
   let result = null;
   const product = await getProductById(id);
 
-  if (product && !product.availabe) {
+  if (product && !product.available) {
     result = await changeAvailability(id, true);
   }
   return result;
@@ -78,9 +78,9 @@ export async function updateProduct(data, id) {
   let result = null;
   const product = await getProductById(id);
   if (product && product.available) {
-    const updateQuery = {}; //consultar ¿?
+    const updateQuery = {}; 
     for (const key in data) {
-      if (data.hasOwnProperty(key)) {  //anotar aclaracion
+      if (data.hasOwnProperty(key)) {  
         updateQuery[key] = data[key];
       }
     }

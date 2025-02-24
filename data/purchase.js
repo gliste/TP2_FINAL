@@ -17,7 +17,7 @@ const purchasesWithProductDetails = await Promise.all(
     purchases.map(async (purchase) => {
         const itemsWithDetails = await Promise.all(
             purchase.items.map(async (item) => {
-                const product = await getProductById(item.producId);
+                const product = await getProductById(item.productId);
                 return {
                     quantity: item.quantity,
                     name: product.description,

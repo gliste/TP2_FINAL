@@ -72,7 +72,7 @@ usersRouter.get("/login", async (req, res) => {
   }
 });
 
-//agregué para ver todos los usuarios
+//ver todos los usuarios
 usersRouter.get("/", auth, rolAdministrador, async (req, res) => {
   try {
     const users = await getAllUsers();

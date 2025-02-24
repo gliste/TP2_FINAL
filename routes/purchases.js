@@ -23,6 +23,7 @@ const purcharsesRouter = express.Router();
 const MSG_ERROR_COMPRA_NO_ENCONTRADA = "La compra no existe";
 
 purcharsesRouter.get("/", auth, rolAdministrador, async (req, res) => {
+  
   try {
     const purchases = await getAllPurchases();
     res.status(200).send(purchases);
