@@ -5,7 +5,10 @@ import {
   generateAuthToken,
   getUserByCredentials,
   getUserByEmail,
+  getAllUsers,
 } from "../data/user.js";
+import auth from "../middleware/auth.js";
+import { rolAdministrador } from "../middleware/roles.js";
 
 const usersRouter = express.Router(); //enrutador de los endpoints
 const MSG_ERROR_EXISTE_USUARIO =
@@ -70,7 +73,7 @@ usersRouter.get("/login", async (req, res) => {
 });
 
 //agregué para ver todos los usuarios
-usersRouter.get("/", async (req, res) => {
+usersRouter.get("/", auth, rolAdministrador, async (req, res) => {
   try {
     const users = await getAllUsers();
     res.status(200).send(users);

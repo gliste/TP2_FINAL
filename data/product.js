@@ -1,5 +1,5 @@
 import getConnection from "./connection.js";
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongodb"; //consultar ¿?
 
 const DATABASE = process.env.DATABASE;
 const COLLECTION = process.env.PRODUCTS_COLLECTION;
@@ -16,16 +16,17 @@ export async function getAllProducts() {
 
 export async function getProductByDescription(description) {
   const client = await getConnection();
-  const products = await client
+  const product = await client
     .db(DATABASE)
     .collection(COLLECTION)
-    .find({ description: description });
-  return products;
+    .findOne({ description: description });
+    console.log(product);
+  return product;
 }
 
 export async function addProduct(data) {
   const client = await getConnection();
-  data.availabe = true;
+  data.available = true;
   const product = await client
     .db(DATABASE)
     .collection(COLLECTION)
@@ -38,7 +39,7 @@ export async function getProductById(id) {
   const product = await client
     .db(DATABASE)
     .collection(COLLECTION)
-    .findOne({ id: id });
+    .findOne({ _id: new ObjectId(id) });
   return product;
 }
 
@@ -77,9 +78,9 @@ export async function updateProduct(data, id) {
   let result = null;
   const product = await getProductById(id);
   if (product && product.available) {
-    const updateQuery = {};
+    const updateQuery = {}; //consultar ¿?
     for (const key in data) {
-      if (data.hasOwnProperty(key)) {
+      if (data.hasOwnProperty(key)) {  //anotar aclaracion
         updateQuery[key] = data[key];
       }
     }

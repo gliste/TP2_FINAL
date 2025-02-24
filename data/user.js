@@ -72,7 +72,7 @@ export async function getAllUsers() {
   const users = await client
     .db(DATABASE)
     .collection(COLLECTION)
-    .find({ available: true })
+    .find()
     .toArray();
   return users;
 }

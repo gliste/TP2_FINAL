@@ -18,7 +18,7 @@ import {
 } from "../utils/validaciones.js";
 import validator from "validator";
 
-const productsRouter = express.Router();
+const productsRouter = express.Router(); //consultar 
 
 const MSG_ERROR_PRODUCTO_EXISTE =
   "Ya existe un producto con la misma descripción";
@@ -63,7 +63,7 @@ productsRouter.get("/:id", async (req, res) => {
   }
 });
 
-//ruta validada, el usuario tiene que estar autenticado y ademas tener el rol admin
+//ruta validada, el usuario tiene que estar autenticado y ademas tener el rol admin para agregar el producto
 productsRouter.post("/add", auth, rolAdministrador, async (req, res) => {
   try {
     //se obtiene el body del request

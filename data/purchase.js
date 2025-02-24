@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { addPurcharseToUser, getUserById } from "./user.js";
 
 const DATABASE = process.env.DATABASE;
-const COLLECTION = process.env.PURCHARSES_COLLETION;
+const COLLECTION = process.env.PURCHASES_COLLECTION;
 
 export async function getAllPurchases() {
   const client = await getConnection();
@@ -75,7 +75,7 @@ export async function validateStockOfProducts(data) {
     let i = 0;
     let result = true;
     while(result && i< data.length){
-        const productId = data[i].producId;
+        const productId = data[i].productId;
         const quantity = data[i].quantity;
         const product = await getProductById(productId);
         
@@ -91,8 +91,8 @@ export async function validateStockOfProducts(data) {
 export async function addPurchase(items, userId) {
     const client = await getConnection();
     for (const item of items){
-        await updateProductStock(item.producId, item.quantity);
-        item.productId = new ObjectId(item.producId);
+        await updateProductStock(item.productId, item.quantity);
+        item.productId = new ObjectId(item.productId);
     }
     const purcharse = await client.db(DATABASE).collection(COLLECTION).insertOne({
         items : items,

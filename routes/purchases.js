@@ -1,10 +1,9 @@
 import express from "express";
 import {
   rolAdministrador,
-  rolUsario,
   rolUsuario,
 } from "../middleware/roles.js";
-import aut from "../middleware/auth.js";
+import auth from "../middleware/auth.js";
 import {
   addPurchase,
   getAllPurchases,
@@ -17,7 +16,7 @@ import {
   normalizarBodyAgregarCompra,
   validarBodyAgregarCompra,
 } from "../utils/validaciones.js";
-import auth from "../middleware/auth.js";
+
 
 const purcharsesRouter = express.Router();
 
@@ -67,7 +66,7 @@ purcharsesRouter.get("/:id", auth, rolAdministrador, async (req, res) => {
   }
 });
 
-purcharsesRouter.post("/new", auth, rolUsario, async (req, res) => {
+purcharsesRouter.post("/new", auth, rolUsuario, async (req, res) => {
     try {
         const body = req.body;
         //se valida el body
